@@ -1,0 +1,11 @@
+#!/bin/bash
+
+#GET ID BOT 
+#https://api.telegram.org/bot<YourBOTToken>/getUpdates
+
+TOKEN=""
+ID=""
+MENSAJE=$1
+URL="https://api.telegram.org/bot$TOKEN/sendMessage"
+
+curl -s -X POST $URL -d chat_id=$ID -d text="$MENSAJE"

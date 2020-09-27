@@ -1,0 +1,27 @@
+#!/bin/bash
+users=$(who | tr -s " " "_" | cut -d "_" -f 5 | cut -d "(" -f2 | cut -d ")" -f1 )
+
+ip_access="188.77.150.12 176.83.230.155"
+
+#SORT CONNECTTED USERS
+connected=$(echo $users | tr " " "\n" | sort | uniq | tr "\n" " ")
+
+#CREATE PERMIT LIST
+for ip in $users;do
+	for ipa in $ip_access;do
+		if [ $ipa == $ip ];then
+			connpermit+=$ip
+			break
+		fi
+	done
+done
+
+#CONCAT LISTS
+check=$connected$connpermit
+
+#CHECK REPEATED, ONLY THESE CAN ACCESS
+deneid=$(echo "$check" | tr " " "\n" | sort | uniq -u)
+
+telegram__message "Unknown host: "
+telegram_message "$deneid"
+echo $deneid
